@@ -16,27 +16,28 @@ describe('Prueba 2: Pruebas de navegación y UI', () => {
     cy.screenshot('03-navegacion-validada');
   });
 
-  it('Debe verificar que la página sea responsive', () => {
-    // Visitar la página con un viewport específico
-    cy.visit('/', {
-      onBeforeLoad: (win) => {
-        win.resizeTo(1280, 720);
-      }
-    });
-    
-    // Captura del viewport 1280x720
-    cy.screenshot('04-responsive-1280x720');
-    
-    // Verificar que el contenido sea visible
-    cy.get('body').should('be.visible');
-    
-    // Verificar dimensiones de la ventana
-    cy.window().then((win) => {
-      expect(win.innerWidth).to.be.greaterThan(0);
-      expect(win.innerHeight).to.be.greaterThan(0);
-    });
-    
-    // Captura final de responsividad
-    cy.screenshot('04-responsive-validada');
-  });
+  
+it('Debe verificar que la página sea responsive', () => {
+
+  // Configurar el tamaño de pantalla
+  cy.viewport(1280, 720);
+
+  // Abrir la aplicación
+  cy.visit('/');
+
+  cy.screenshot('04-responsive-1280x720');
+
+  // Verificar que el formulario sea visible
+  cy.get('h1')
+    .should('be.visible')
+    .and('contain.text', 'Registro de Productos');
+
+  // Verificar dimensiones
+  cy.window().its('innerWidth').should('eq', 1280);
+  cy.window().its('innerHeight').should('eq', 720);
+
+  cy.screenshot('04-responsive-validada');
+
+});
+
 });
